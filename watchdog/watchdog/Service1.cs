@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,11 +8,12 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace watchdog
 {
+
     public partial class Service1 : ServiceBase
     {
+        private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
         public Service1()
         {
             InitializeComponent();
@@ -19,6 +21,9 @@ namespace watchdog
 
         protected override void OnStart(string[] args)
         {
+            _logger.Info("-----------------------------Service Start");
+
+
         }
 
         protected override void OnStop()
