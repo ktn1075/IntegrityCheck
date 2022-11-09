@@ -8,13 +8,20 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using WatsonWebserver;
+
 namespace watchdog
 {
 
-    public partial class Service1 : ServiceBase
+    public partial class MonitorService : ServiceBase
     {
         private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
-        public Service1()
+
+        private Monitor _monitor;
+
+        private Server _server;
+
+        public MonitorService()
         {
             InitializeComponent();
         }
@@ -23,11 +30,23 @@ namespace watchdog
         {
             _logger.Info("-----------------------------Service Start");
 
+            Utils.WithExceptionHandled("", true, () =>
+              {
+                  _monitor = Monitor.New("server");
 
+                  _server = new Server(_monitor.RestServerHostName, _monitor.RestServerPort);
+
+
+
+
+
+
+              });
         }
 
         protected override void OnStop()
         {
+            _logger.Info("-----------------------------Service Stop");
         }
     }
 }
