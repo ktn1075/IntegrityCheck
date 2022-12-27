@@ -15,11 +15,11 @@ namespace watchdog
 
     public partial class MonitorService : ServiceBase
     {
-        private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         private Monitor _monitor;
 
-        private Server _server;
+        private static Server _Server = null;
 
         public MonitorService()
         {
@@ -29,24 +29,44 @@ namespace watchdog
         protected override void OnStart(string[] args)
         {
             _logger.Info("-----------------------------Service Start");
+            
+            try
+            { 
+                _logger.Info("Monitoring Start");
 
-            Utils.WithExceptionHandled("", true, () =>
-              {
-                  _monitor = Monitor.New("server");
+                _monitor = Monitor.New("server");
+                _monitor.Start();
 
-                  _server = new Server(_monitor.RestServerHostName, _monitor.RestServerPort);
+                _logger.Info("RestServer Start");
 
-
-
-
-
-
-              });
+                _Server = new Server(_monitor.RestServerHostName, _monitor.RestServerPort, false, DefaultRoute);
+                _Server.Start();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"<<--------{ex}-------->>");
+            }
         }
 
         protected override void OnStop()
         {
             _logger.Info("-----------------------------Service Stop");
+
+            _Server.Stop();
+  
         }
+
+        internal void TestStartupAndStop(string[] args)
+        {
+            this.OnStart(args);
+            Console.ReadLine();
+            this.OnStop();
+        }
+
+        static async Task DefaultRoute(HttpContext ctx)
+        {
+
+        }
+
     }
 }

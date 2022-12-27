@@ -12,11 +12,13 @@ public abstract class Monitor
     public abstract string RestServerHostName { get; }
     public abstract int RestServerPort { get; }
 
-    private const long INTEGRITY_INTERVAL = 60;
+    private const long INTEGRITY_INTERVAL = 10;  // 초 단위
 
     protected abstract string TargetProcess { get; }
 
     private Thread _monitorring;
+
+    private static readonly NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
     /*
      * 서버, 프로그램, 패키지 다양한 환경에서 처리를 위해 추상 클래스로 작성 
@@ -46,7 +48,7 @@ public abstract class Monitor
                 {
                     Monitorring();
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
                     // logger
                 }
@@ -86,7 +88,6 @@ public abstract class Monitor
 
                     lastIntegrityChecked = now;
                 }
-
             }
             else
             {
@@ -97,16 +98,13 @@ public abstract class Monitor
 
     private void CheckIntegrity()
     {
+        _logger.Info("watchdog 무결성 검사");
+
         var deleteList = new List<string>();
         var corruptedList = new List<string>();
 
         // 원본 무결성은 어디서 받아올것인가?
         // 
-
-
-
-
-
 
     }
 }
