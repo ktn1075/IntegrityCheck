@@ -12,6 +12,7 @@ class ServerMonitor :Monitor
     public override string RestServerHostName => "127.0.0.1";
     public override int RestServerPort => 50005;
 
+    // 임시로 Steam을 등록함
     protected override string TargetProcess => "Steam";
 
     public ServerMonitor()

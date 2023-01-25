@@ -35,6 +35,24 @@ public abstract class Monitor
         }
     }
 
+    
+    // Test 에 있는 딕셔너리를 통해 가지고 온다 
+
+    public bool CheckIntegrity()
+    {
+        _logger.Info("watchdog 무결성 검사");
+
+        var deleteList = new List<string>();
+        var corruptedList = new List<string>();
+
+        var sha = new System.Security.Cryptography.SHA512Managed();
+
+        // 해당 소스코드에서 기존 hash 값과  for 문을 돌며 나온 hash 값을 비교한다.
+              
+        return false;
+    }
+
+
     public void Start()
     {
         if (_monitorring != null)
@@ -50,7 +68,7 @@ public abstract class Monitor
                 }
                 catch (Exception ex)
                 {
-                    // logger
+                    _logger.Error($"Monitorring thread Error: {ex}");
                 }
                 for (int i = 0; i < 60 && _monitorring != null; i++)
                     Thread.Sleep(1000);
@@ -63,6 +81,12 @@ public abstract class Monitor
         };
 
         _monitorring.Start();
+    }
+
+    public void Stop()
+    {
+        _monitorring = null;
+        Thread.Sleep(3000);
     }
 
     private void Monitorring()
@@ -94,18 +118,6 @@ public abstract class Monitor
                 lastIntegrityChecked = 0;
             }
         }
-    }
-
-    private void CheckIntegrity()
-    {
-        _logger.Info("watchdog 무결성 검사");
-
-        var deleteList = new List<string>();
-        var corruptedList = new List<string>();
-
-        // 원본 무결성은 어디서 받아올것인가?
-        // 
-
     }
 }
 

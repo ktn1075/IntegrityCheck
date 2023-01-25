@@ -19,7 +19,7 @@ namespace watchdog
 
         private Monitor _monitor;
 
-        private static Server _Server = null;
+        private static Server _server = null;
 
         public MonitorService()
         {
@@ -34,13 +34,16 @@ namespace watchdog
             { 
                 _logger.Info("Monitoring Start");
 
-                _monitor = Monitor.New("server");
+                _monitor = Monitor.New(args[0]);
                 _monitor.Start();
-
+               
                 _logger.Info("RestServer Start");
 
-                _Server = new Server(_monitor.RestServerHostName, _monitor.RestServerPort, false, DefaultRoute);
-                _Server.Start();
+                _server = new Server(_monitor.RestServerHostName, _monitor.RestServerPort);
+
+                SetRestHandlers();
+
+                _server.Start();
             }
             catch (Exception ex)
             {
@@ -52,8 +55,9 @@ namespace watchdog
         {
             _logger.Info("-----------------------------Service Stop");
 
-            _Server.Stop();
-  
+            _monitor.Stop();
+            _server.Stop();
+            
         }
 
         internal void TestStartupAndStop(string[] args)
@@ -63,9 +67,18 @@ namespace watchdog
             this.OnStop();
         }
 
-        static async Task DefaultRoute(HttpContext ctx)
-        {
 
+        // 외부 요청 처리 
+        private void SetRestHandlers()
+        {
+            _server.Routes.Static.Add(HttpMethod.GET, "/check", async (ctx) =>
+            {
+                string message = "false";
+
+                if(_monitor.CheckIntegrity()) message = "success";
+ 
+                await ctx.Response.Send(message);
+            });
         }
 
     }

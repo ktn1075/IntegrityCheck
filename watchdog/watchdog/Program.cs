@@ -9,9 +9,7 @@ namespace watchdog
 {
     static class Program
     {
-        /// <summary>
-        /// 해당 애플리케이션의 주 진입점입니다.
-        /// </summary>
+  
         static void Main(string[] args)
         {
             //DEBUG 용 콘솔처리
@@ -34,10 +32,7 @@ namespace watchdog
 
         static void LogSetting(string targetName)
         {
-             // NLOG 를 다시 쓰거나  설정 필요 
-
-
-
+             // 로깅 부분 추가
         }
     }
 }
