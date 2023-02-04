@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WatsonWebserver;
 
-namespace watchdog
+namespace monitor
 {
 
     public partial class MonitorService : ServiceBase

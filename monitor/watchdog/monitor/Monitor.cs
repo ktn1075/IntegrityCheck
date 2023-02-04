@@ -40,7 +40,7 @@ public abstract class Monitor
 
     public bool CheckIntegrity()
     {
-        _logger.Info("watchdog 무결성 검사");
+        _logger.Info("무결성 검사");
 
         var deleteList = new List<string>();
         var corruptedList = new List<string>();

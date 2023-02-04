@@ -1,5 +1,5 @@
 ﻿
-namespace watchdog
+namespace monitor
 {
     partial class MonitorService
     {

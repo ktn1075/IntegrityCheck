@@ -1,5 +1,5 @@
 ﻿
-namespace watchdog
+namespace monitor
 {
     partial class ProjectInstaller
     {
@@ -40,8 +40,8 @@ namespace watchdog
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.DisplayName = "watchdog";
-            this.serviceInstaller1.ServiceName = "watchdog";
+            this.serviceInstaller1.DisplayName = "monitor";
+            this.serviceInstaller1.ServiceName = "monitor";
             // 
             // ProjectInstaller
             // 
